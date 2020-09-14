@@ -255,6 +255,9 @@ func (s *testValidatorSuite) TestValidator(c *C) {
 		{"CREATE TABLE origin (a int primary key auto_increment, b int);", false, nil},
 		{"CREATE TABLE origin (a int unique auto_increment, b int);", false, nil},
 		{"CREATE TABLE origin (a int key auto_increment, b int);", false, nil},
+		// issue 18149
+		{"CREATE TABLE t1(x INT, KEY ``(x));", false, ddl.ErrWrongNameForIndex},
+		{"CREATE TABLE t1(x INT, KEY `        `(x));", false, ddl.ErrWrongNameForIndex},
 	}
 
 	_, err := s.se.Execute(context.Background(), "use test")

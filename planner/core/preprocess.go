@@ -730,7 +730,7 @@ func checkDuplicateColumnName(IndexPartSpecifications []*ast.IndexPartSpecificat
 
 // checkIndexInfo checks index name and index column names.
 func checkIndexInfo(indexName string, IndexPartSpecifications []*ast.IndexPartSpecification) error {
-	if strings.EqualFold(indexName, mysql.PrimaryKeyName) {
+	if strings.EqualFold(indexName, mysql.PrimaryKeyName) || len(strings.Replace(indexName, " ", "", -1)) == 0 {
 		return ddl.ErrWrongNameForIndex.GenWithStackByArgs(indexName)
 	}
 	if len(IndexPartSpecifications) > mysql.MaxKeyParts {
